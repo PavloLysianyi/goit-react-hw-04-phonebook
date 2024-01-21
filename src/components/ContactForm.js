@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { nanoid } from 'nanoid';
 
-const ContactForm = ({ onAddContact, contacts }) => {
+const ContactForm = ({ onAddContact }) => {
   const [formData, setFormData] = useState({ name: '', number: '' });
 
   const handleInputChange = event => {
@@ -14,15 +14,6 @@ const ContactForm = ({ onAddContact, contacts }) => {
 
     if (name.trim() === '' || number.trim() === '') {
       alert("Будь ласка, введіть ім'я та номер контакту.");
-      return;
-    }
-
-    const isNameExists = contacts.some(
-      contact => contact.name.toLowerCase() === name.toLowerCase()
-    );
-
-    if (isNameExists) {
-      alert(`Контакт з ім'ям ${name} вже існує у телефонній книзі.`);
       return;
     }
 

@@ -1,22 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ContactForm from './ContactForm';
 import Filter from './Filter';
 import ContactList from './ContactList';
 
 const App = () => {
-  const [contacts, setContacts] = useState([]);
-  const [filter, setFilter] = useState('');
-
-  useEffect(() => {
+  const [contacts, setContacts] = useState(() => {
     const storedContacts = localStorage.getItem('contacts');
-    if (storedContacts) {
-      setContacts(JSON.parse(storedContacts));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
+    return storedContacts ? JSON.parse(storedContacts) : [];
+  });
+  const [filter, setFilter] = useState('');
 
   const handleFilterChange = event => {
     setFilter(event.target.value);
@@ -49,7 +41,7 @@ const App = () => {
   return (
     <div className="container">
       <h1 className="heading">Phonebook</h1>
-      <ContactForm onAddContact={handleAddContact} contacts={contacts} />
+      <ContactForm onAddContact={handleAddContact} />
       <h2 className="sub-heading">Contacts</h2>
       <Filter filter={filter} onFilterChange={handleFilterChange} />
       <ContactList
