@@ -1,20 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { nanoid } from 'nanoid';
 
-class ContactForm extends React.Component {
-  state = {
-    name: '',
-    number: '',
-  };
+const ContactForm = ({ onAddContact, contacts }) => {
+  const [formData, setFormData] = useState({ name: '', number: '' });
 
-  handleInputChange = event => {
+  const handleInputChange = event => {
     const { name, value } = event.target;
-    this.setState({ [name]: value });
+    setFormData(prevData => ({ ...prevData, [name]: value }));
   };
 
-  handleAddContact = () => {
-    const { name, number } = this.state;
-    const { onAddContact, contacts } = this.props;
+  const handleAddContact = () => {
+    const { name, number } = formData;
 
     if (name.trim() === '' || number.trim() === '') {
       alert("Будь ласка, введіть ім'я та номер контакту.");
@@ -37,49 +33,38 @@ class ContactForm extends React.Component {
     };
 
     onAddContact(newContact);
-    this.setState({
-      name: '',
-      number: '',
-    });
+    setFormData({ name: '', number: '' });
   };
 
-  render() {
-    const { name, number } = this.state;
-
-    return (
-      <div className="form-container">
-        <label className="label">
-          Ім'я контакту:
-          <input
-            type="text"
-            name="name"
-            value={name}
-            onChange={this.handleInputChange}
-            required
-            className="input"
-          />
-        </label>
-        <label className="label">
-          Номер телефону:
-          <input
-            type="tel"
-            name="number"
-            value={number}
-            onChange={this.handleInputChange}
-            required
-            className="input"
-          />
-        </label>
-        <button
-          type="button"
-          onClick={this.handleAddContact}
-          className="button"
-        >
-          Додати контакт
-        </button>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="form-container">
+      <label className="label">
+        Ім'я контакту:
+        <input
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleInputChange}
+          required
+          className="input"
+        />
+      </label>
+      <label className="label">
+        Номер телефону:
+        <input
+          type="tel"
+          name="number"
+          value={formData.number}
+          onChange={handleInputChange}
+          required
+          className="input"
+        />
+      </label>
+      <button type="button" onClick={handleAddContact} className="button">
+        Додати контакт
+      </button>
+    </div>
+  );
+};
 
 export default ContactForm;
